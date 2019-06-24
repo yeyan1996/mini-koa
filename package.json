@@ -1,14 +1,14 @@
 {
   "name": "mini-koa",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.1",
+  "description": "一个简易的 koa 框架",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["koa"],
+  "author": "yeyan1996",
+  "license": "MIT",
   "devDependencies": {
     "accepts": "^1.3.7",
     "cache-content-type": "^1.0.1",

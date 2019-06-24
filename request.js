@@ -1,3 +1,4 @@
+// 这里不想一个个对所有情况做封装处理，所以直接拷贝 koa 源码中的 request / response 文件
 
 'use strict';
 

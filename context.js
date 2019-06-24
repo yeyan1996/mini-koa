@@ -63,14 +63,18 @@ const resSet = [
 
 
 function proxyGet(context,key) {
+    // 设置白名单直接指向 request / response 对象
     if (WHILE_LIST.includes(key)) return context[key]
+
+    // 否则指向 request / response 中的具体属性
     if (reqGet.includes(key)) return context.request[key]
     if (resGet.includes(key)) return context.response[key]
     return Reflect.get(context,key)
 }
 
 function proxySet(context,key, value) {
-    if (WHILE_LIST.includes(key)) return true
+    // 防止修改 ctx.request / ctx.response
+    if (WHILE_LIST.includes(key)) return false
 
     if (reqSet.includes(key)) {
         context.request[key] = value
@@ -83,7 +87,8 @@ function proxySet(context,key, value) {
     return Reflect.set(context,key,value)
 }
 
-
+// 这里没有使用 koa 默认的 delegate 库做代理
+// 而是通过 ES6 的 Proxy 代理 ctx 对象
 function handleCreateContext(req, res) {
     let context = {
         request: Object.create(request),
