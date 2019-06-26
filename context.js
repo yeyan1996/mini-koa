@@ -89,7 +89,9 @@ function proxySet(context,key, value) {
 
 // 这里没有使用 koa 默认的 delegate 库做代理
 // 而是通过 ES6 的 Proxy 代理 ctx 对象
+// Todo 考虑使用 class 实例化 ctx 对象
 function handleCreateContext(req, res) {
+
     let context = {
         request: Object.create(request),
         response: Object.create(response),
@@ -98,7 +100,7 @@ function handleCreateContext(req, res) {
     context.req = request.req = response.req = req;
     context.res = request.res = response.res = res;
 
-    return new Proxy(context, {
+    const ctx = new Proxy(context, {
         get(target, key) {
             return proxyGet(target,key)
         },
@@ -106,6 +108,15 @@ function handleCreateContext(req, res) {
             return proxySet(target,key, value)
         }
     })
+
+    request.ctx = response.ctx = ctx
+
+    // Todo 错误处理
+    ctx.onerror = function (err) {
+        console.error(err)
+    }
+
+    return ctx
 }
 
 

@@ -1,6 +1,6 @@
 {
   "name": "mini-koa",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "一个简易的 koa 框架",
   "main": "index.js",
   "scripts": {
