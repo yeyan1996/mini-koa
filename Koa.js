@@ -1,7 +1,7 @@
 const http = require("http")
 const EventsEmitter = require("events")
 const compose = require("./compose")
-const handleCreateContext = require("./context")
+const Context = require("./context")
 const Stream = require('stream');
 
 class Koa extends EventsEmitter {
@@ -22,16 +22,15 @@ class Koa extends EventsEmitter {
 
     callback() {
         return async (req, res) => {
-            this.on('error', this.handleError)
             // 创建 ctx 对象
-            let ctx = handleCreateContext(req, res)
+            let ctx = new Context(req, res)
             // 组合中间件
             let composedFunction = compose(this.middleware)
             try {
                 await composedFunction(ctx)
                 this.handleResponse(ctx)
             } catch (e) {
-                this.handleError(e)
+                ctx.onerror(e)
             }
         }
     }
@@ -42,13 +41,6 @@ class Koa extends EventsEmitter {
         if (ctx.body instanceof Stream) return ctx.body.pipe(ctx.res) // 文件流
         if(ctx.body instanceof Buffer) return ctx.res.end(ctx.body) // Buffer
         ctx.res.end(JSON.stringify(ctx.body))
-
-    }
-
-
-    // Todo 错误处理
-    handleError(err) {
-        console.error(err)
     }
 }
 

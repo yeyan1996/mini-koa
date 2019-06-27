@@ -6,22 +6,23 @@ const app = new Koa()
 
 
 app.use(cors({
-    withCredentials:true,
-    exposeHeaders:'content-type',
-    allowHeaders:"content-type",
-    maxAge:1000 * 60 * 60
+    withCredentials: true,
+    exposeHeaders: 'content-type',
+    allowHeaders: "content-type",
+    maxAge: 1000 * 60 * 60
 }))
 
-app.use(async (ctx,next)=>{
+
+app.use(async (ctx, next) => {
     // console.log(ctx.method)
     // console.log(ctx.query)
     await next()
 })
 
-app.use(async ctx=>{
-    ctx.body = fs.readFileSync(path.join(__dirname,'./assets/123.png'))
+app.use(async ctx => {
+    ctx.body = fs.readFileSync(path.join(__dirname, './assets/123.png'))
 })
 
-app.listen(3000,()=>{
+app.listen(3000, () => {
     console.log('mini-koa 正在启动')
 })
