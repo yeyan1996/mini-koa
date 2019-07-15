@@ -20,9 +20,10 @@ app.use(async (ctx, next) => {
 })
 
 app.use(async ctx => {
+    ctx.res.setHeader('content-type','image/png')
     ctx.body = fs.readFileSync(path.join(__dirname, './assets/123.png'))
 })
 
 app.listen(3000, () => {
-    console.log('mini-koa 正在启动')
+    console.log('mini-koa 正在启动，端口 3000')
 })
